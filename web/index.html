@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Conversor de Mensajes WS</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="glass-container">
+      <!-- Header -->
+      <header>
+        <div class="header-logo">
+          <svg
+            width="32"
+            height="32"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M21 11.5C21 16.75 16.52 21 11 21C9.62 21 8.3 20.71 7.12 20.2L3 21.5L4.44 17.65C3.52 16.27 3 14.61 3 12.83C3 7.58 7.48 3.32 13 3.32C18.52 3.32 21 7.58 21 11.5Z"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <h1>
+            Conversor de Mensajes WS <span class="version">v2.0 Web</span>
+          </h1>
+        </div>
+        <button class="icon-btn" onclick="showInfo()" title="Acerca de">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+        </button>
+      </header>
+
+      <main>
+        <!-- File Upload Section -->
+        <section
+          class="card drop-zone"
+          id="drop-zone"
+          onclick="if (!selectedFilePath) selectFile();"
+        >
+          <div class="drop-content" id="drop-empty">
+            <svg
+              width="40"
+              height="40"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            <h3>1. Selecciona tu chat de WhatsApp (.txt)</h3>
+            <p class="file-name-empty">Haz clic aquí para buscar el archivo</p>
+          </div>
+
+          <div class="drop-content" id="drop-loading" style="display: none">
+            <svg
+              class="spinner"
+              width="40"
+              height="40"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M21 12a9 9 0 1 1-6.219-8.56"></path>
+            </svg>
+            <h3>Cargando archivo...</h3>
+            <p class="file-name-empty">Analizando tu chat, por favor espera</p>
+          </div>
+
+          <div class="drop-content" id="drop-filled" style="display: none">
+            <p
+              id="file-name"
+              class="file-name-filled"
+              style="font-size: 16px"
+            ></p>
+            <button class="btn-danger-outline" onclick="clearFile(event)">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+              Quitar archivo
+            </button>
+          </div>
+        </section>
+
+        <div class="two-cols">
+          <!-- Participants Section -->
+          <section class="card">
+            <h3>2. Participantes</h3>
+
+            <div class="settings-grid">
+              <div class="participant-group">
+                <label class="green-label">Persona A</label>
+                <select id="person-a" disabled>
+                  <option>Esperando archivo...</option>
+                </select>
+                <input
+                  type="text"
+                  id="alias-a"
+                  placeholder="Alias (Opcional)"
+                  disabled
+                />
+              </div>
+
+              <div class="participant-group">
+                <label class="white-label">Persona B</label>
+                <select id="person-b" disabled>
+                  <option>Esperando archivo...</option>
+                </select>
+                <input
+                  type="text"
+                  id="alias-b"
+                  placeholder="Alias (Opcional)"
+                  disabled
+                />
+              </div>
+            </div>
+
+            <div class="checkbox-group">
+              <label class="cb-container">
+                <input type="checkbox" id="show-name" checked />
+                <span class="checkmark"></span>
+                Mostrar nombre en mensajes
+              </label>
+            </div>
+          </section>
+
+          <!-- Styles Section -->
+          <section class="card">
+            <h3>3. Estilos y Formato</h3>
+
+            <div class="settings-grid">
+              <div class="setting-item">
+                <label>Formato de Hora:</label>
+                <select id="time-format">
+                  <option value="12H">12H (AM/PM)</option>
+                  <option value="24H">24H</option>
+                </select>
+              </div>
+              <div class="setting-item">
+                <label>Densidad Visual:</label>
+                <select id="ui-density">
+                  <option value="Normal">Normal</option>
+                  <option value="Compacto">Compacto</option>
+                </select>
+              </div>
+              <div class="setting-item">
+                <label>Tamaño Texto:</label>
+                <select id="text-size">
+                  <option value="Grande">Grande</option>
+                  <option value="Medio" selected>Medio</option>
+                  <option value="Pequeño">Pequeño</option>
+                </select>
+              </div>
+              <div class="setting-item">
+                <label>Columnas:</label>
+                <select id="columns-count">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                </select>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="two-cols">
+          <!-- Dates Section -->
+          <section class="card dates-section">
+            <div class="card-header">
+              <h3>4. Filtros de Fecha (Opcional)</h3>
+              <button class="btn-secondary btn-sm" onclick="addDateRow()">
+                + Agregar Rango
+              </button>
+            </div>
+            <div id="dates-container">
+              <!-- Date rows will be added here -->
+            </div>
+            <p class="hint">
+              Ej: 01/01/2023 - 31/12/2023. Dejar en blanco para no limitar.
+            </p>
+          </section>
+
+          <!-- Output Section -->
+          <section class="card col-span">
+            <h3>5. Finalizar</h3>
+            <div class="output-group">
+              <label>Ruta de guardado:</label>
+              <div class="input-with-btn">
+                <input
+                  type="text"
+                  id="out-path"
+                  placeholder="C:\Ruta\chat.html"
+                />
+                <button class="btn-secondary" onclick="browseOutput()">
+                  Seleccionar...
+                </button>
+              </div>
+            </div>
+
+            <div class="checkbox-group">
+              <label class="cb-container">
+                <input type="checkbox" id="auto-open" checked />
+                <span class="checkmark"></span>
+                Abrir HTML automáticamente al terminar
+              </label>
+            </div>
+          </section>
+        </div>
+
+        <!-- Generate Button -->
+        <button
+          class="btn-primary"
+          id="btn-generate"
+          onclick="generateHtml()"
+          disabled
+        >
+          Generar Conversación HTML
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+        </button>
+      </main>
+    </div>
+
+    <!-- Info Modal -->
+    <div class="modal-overlay" id="info-modal" onclick="closeInfo(event)">
+      <div class="modal-card" onclick="event.stopPropagation()">
+        <div class="modal-header">
+          <h3>Acerca de</h3>
+          <button
+            class="icon-btn-close"
+            onclick="closeInfo(event)"
+            title="Cerrar"
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p><strong>Autor:</strong> <span>Firo</span></p>
+          <p><strong>Versión:</strong> <span>v2.0</span></p>
+          <p><strong>Contacto:</strong> <span>firogv96@outlook.com</span></p>
+          <p><strong>Año:</strong> <span>2026</span></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alert Modal -->
+    <div class="modal-overlay" id="alert-modal" onclick="closeAlert(event)">
+      <div class="modal-card" onclick="event.stopPropagation()">
+        <div class="modal-header">
+          <h3 id="alert-title">Aviso</h3>
+          <button
+            class="icon-btn-close"
+            onclick="closeAlert(event)"
+            title="Cerrar"
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div
+            id="alert-message"
+            style="
+              text-align: center;
+              margin: 10px 0;
+              color: var(--text-main);
+              font-size: 15px;
+              line-height: 1.5;
+            "
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript" src="/eel.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
