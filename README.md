@@ -18,7 +18,7 @@ La aplicación es un programa de escritorio construido en **Python**. En lugar d
 Para usar la aplicación de forma rápida sin necesidad de instalar Python ni librerías adicionales:
 
 1. Ve a la sección de **[Releases](https://github.com/firogv96/conversor-mensajes-ws/releases)** de este repositorio.
-2. Descarga el archivo `.exe` de la versión más reciente (por ejemplo: `Conversor.de.Mensajes.WS.v2.0.exe`).
+2. Descarga el archivo `.exe` de la versión más reciente (por ejemplo: `Conversor.de.Mensajes.WS.v2.exe`).
 3. Haz doble clic en el archivo descargado para ejecutarlo.
 
 ## Datos de Desarrollo

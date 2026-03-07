@@ -3,12 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Conversor de Mensajes WS</title>
+    <title data-i18n="title">Conversor de Mensajes WS</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
   </head>
   <body>
     <div class="glass-container">
@@ -31,25 +32,56 @@
             />
           </svg>
           <h1>
-            Conversor de Mensajes WS <span class="version">v2.0 Web</span>
+            <span data-i18n="title">Conversor de Mensajes WS</span>
+            <span class="version">v2.0.1</span>
           </h1>
         </div>
-        <button class="icon-btn" onclick="showInfo()" title="Acerca de">
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+        <div style="display: flex; gap: 8px">
+          <button
+            class="icon-btn"
+            onclick="toggleLanguage()"
+            data-i18n-title="langTitle"
+            title="Cambiar Idioma"
           >
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="12" y1="16" x2="12" y2="12"></line>
-            <line x1="12" y1="8" x2="12.01" y2="8"></line>
-          </svg>
-        </button>
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path
+                d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+              ></path>
+            </svg>
+          </button>
+          <button
+            class="icon-btn"
+            onclick="showInfo()"
+            data-i18n-title="aboutTitle"
+            title="Acerca de"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+          </button>
+        </div>
       </header>
 
       <main>
@@ -74,8 +106,12 @@
               <polyline points="17 8 12 3 7 8"></polyline>
               <line x1="12" y1="3" x2="12" y2="15"></line>
             </svg>
-            <h3>1. Selecciona tu chat de WhatsApp (.txt)</h3>
-            <p class="file-name-empty">Haz clic aquí para buscar el archivo</p>
+            <h3 data-i18n="step1Title">
+              1. Selecciona tu chat de WhatsApp (.txt)
+            </h3>
+            <p class="file-name-empty" data-i18n="step1Empty">
+              Haz clic aquí para buscar el archivo
+            </p>
           </div>
 
           <div class="drop-content" id="drop-loading" style="display: none">
@@ -92,8 +128,10 @@
             >
               <path d="M21 12a9 9 0 1 1-6.219-8.56"></path>
             </svg>
-            <h3>Cargando archivo...</h3>
-            <p class="file-name-empty">Analizando tu chat, por favor espera</p>
+            <h3 data-i18n="loadingTitle">Cargando archivo...</h3>
+            <p class="file-name-empty" data-i18n="loadingDesc">
+              Analizando tu chat, por favor espera
+            </p>
           </div>
 
           <div class="drop-content" id="drop-filled" style="display: none">
@@ -102,7 +140,11 @@
               class="file-name-filled"
               style="font-size: 16px"
             ></p>
-            <button class="btn-danger-outline" onclick="clearFile(event)">
+            <button
+              class="btn-danger-outline"
+              onclick="clearFile(event)"
+              data-i18n="removeFile"
+            >
               <svg
                 width="16"
                 height="16"
@@ -124,31 +166,33 @@
         <div class="two-cols">
           <!-- Participants Section -->
           <section class="card">
-            <h3>2. Participantes</h3>
+            <h3 data-i18n="step2Title">2. Participantes</h3>
 
             <div class="settings-grid">
               <div class="participant-group">
-                <label class="green-label">Persona A</label>
+                <label class="green-label" data-i18n="personA">Persona A</label>
                 <select id="person-a" disabled>
-                  <option>Esperando archivo...</option>
+                  <option data-i18n="waitingFile">Esperando archivo...</option>
                 </select>
                 <input
                   type="text"
                   id="alias-a"
                   placeholder="Alias (Opcional)"
+                  data-i18n="aliasPlaceholder"
                   disabled
                 />
               </div>
 
               <div class="participant-group">
-                <label class="white-label">Persona B</label>
+                <label class="white-label" data-i18n="personB">Persona B</label>
                 <select id="person-b" disabled>
-                  <option>Esperando archivo...</option>
+                  <option data-i18n="waitingFile">Esperando archivo...</option>
                 </select>
                 <input
                   type="text"
                   id="alias-b"
                   placeholder="Alias (Opcional)"
+                  data-i18n="aliasPlaceholder"
                   disabled
                 />
               </div>
@@ -158,40 +202,46 @@
               <label class="cb-container">
                 <input type="checkbox" id="show-name" checked />
                 <span class="checkmark"></span>
-                Mostrar nombre en mensajes
+                <span data-i18n="showName">Mostrar nombre en mensajes</span>
               </label>
             </div>
           </section>
 
           <!-- Styles Section -->
           <section class="card">
-            <h3>3. Estilos y Formato</h3>
+            <h3 data-i18n="step3Title">3. Estilos y Formato</h3>
 
             <div class="settings-grid">
               <div class="setting-item">
-                <label>Formato de Hora:</label>
+                <label data-i18n="timeFormat">Formato de Hora:</label>
                 <select id="time-format">
                   <option value="12H">12H (AM/PM)</option>
                   <option value="24H">24H</option>
                 </select>
               </div>
               <div class="setting-item">
-                <label>Densidad Visual:</label>
+                <label data-i18n="uiDensity">Densidad Visual:</label>
                 <select id="ui-density">
-                  <option value="Normal">Normal</option>
-                  <option value="Compacto">Compacto</option>
+                  <option value="Normal" data-i18n="densityNormal">
+                    Normal
+                  </option>
+                  <option value="Compacto" data-i18n="densityCompact">
+                    Compacto
+                  </option>
                 </select>
               </div>
               <div class="setting-item">
-                <label>Tamaño Texto:</label>
+                <label data-i18n="textSize">Tamaño Texto:</label>
                 <select id="text-size">
-                  <option value="Grande">Grande</option>
-                  <option value="Medio" selected>Medio</option>
-                  <option value="Pequeño">Pequeño</option>
+                  <option value="Grande" data-i18n="sizeLarge">Grande</option>
+                  <option value="Medio" selected data-i18n="sizeMedium">
+                    Medio
+                  </option>
+                  <option value="Pequeño" data-i18n="sizeSmall">Pequeño</option>
                 </select>
               </div>
               <div class="setting-item">
-                <label>Columnas:</label>
+                <label data-i18n="columns">Columnas:</label>
                 <select id="columns-count">
                   <option value="1">1</option>
                   <option value="2">2</option>
@@ -206,31 +256,38 @@
           <!-- Dates Section -->
           <section class="card dates-section">
             <div class="card-header">
-              <h3>4. Filtros de Fecha (Opcional)</h3>
-              <button class="btn-secondary btn-sm" onclick="addDateRow()">
+              <h3 data-i18n="step4Title">4. Filtros de Fecha (Opcional)</h3>
+              <button
+                class="btn-secondary btn-sm"
+                onclick="addDateRow()"
+                data-i18n="addDateRow"
+              >
                 + Agregar Rango
               </button>
             </div>
             <div id="dates-container">
               <!-- Date rows will be added here -->
             </div>
-            <p class="hint">
+            <p class="hint" data-i18n="dateHint">
               Ej: 01/01/2023 - 31/12/2023. Dejar en blanco para no limitar.
             </p>
           </section>
 
-          <!-- Output Section -->
           <section class="card col-span">
-            <h3>5. Finalizar</h3>
+            <h3 data-i18n="step5Title">5. Finalizar</h3>
             <div class="output-group">
-              <label>Ruta de guardado:</label>
+              <label data-i18n="savePath">Ruta de guardado:</label>
               <div class="input-with-btn">
                 <input
                   type="text"
                   id="out-path"
                   placeholder="C:\Ruta\chat.html"
                 />
-                <button class="btn-secondary" onclick="browseOutput()">
+                <button
+                  class="btn-secondary"
+                  onclick="browseOutput()"
+                  data-i18n="btnBrowse"
+                >
                   Seleccionar...
                 </button>
               </div>
@@ -240,7 +297,9 @@
               <label class="cb-container">
                 <input type="checkbox" id="auto-open" checked />
                 <span class="checkmark"></span>
-                Abrir HTML automáticamente al terminar
+                <span data-i18n="autoOpen"
+                  >Abrir HTML automáticamente al terminar</span
+                >
               </label>
             </div>
           </section>
@@ -252,6 +311,7 @@
           id="btn-generate"
           onclick="generateHtml()"
           disabled
+          data-i18n="btnGenerate"
         >
           Generar Conversación HTML
           <svg
@@ -274,10 +334,11 @@
     <div class="modal-overlay" id="info-modal" onclick="closeInfo(event)">
       <div class="modal-card" onclick="event.stopPropagation()">
         <div class="modal-header">
-          <h3>Acerca de</h3>
+          <h3 data-i18n="aboutTitle">Acerca de</h3>
           <button
             class="icon-btn-close"
             onclick="closeInfo(event)"
+            data-i18n-title="closeTitle"
             title="Cerrar"
           >
             <svg
@@ -296,10 +357,26 @@
           </button>
         </div>
         <div class="modal-body">
-          <p><strong>Autor:</strong> <span>Firo</span></p>
-          <p><strong>Versión:</strong> <span>v2.0</span></p>
-          <p><strong>Contacto:</strong> <span>firogv96@outlook.com</span></p>
-          <p><strong>Año:</strong> <span>2026</span></p>
+          <p>
+            <strong><span data-i18n="aboutAuthor">Autor:</span></strong>
+            <span>Firo</span>
+          </p>
+          <p>
+            <strong><span data-i18n="aboutVersion">Versión:</span></strong>
+            <span>v2.0.1</span>
+          </p>
+          <p>
+            <strong><span data-i18n="aboutContact">Contacto:</span></strong>
+            <span
+              ><a href="mailto:firogv96@outlook.com"
+                >firogv96@outlook.com</a
+              ></span
+            >
+          </p>
+          <p>
+            <strong><span data-i18n="aboutYear">Año:</span></strong>
+            <span>2026</span>
+          </p>
         </div>
       </div>
     </div>
@@ -308,10 +385,11 @@
     <div class="modal-overlay" id="alert-modal" onclick="closeAlert(event)">
       <div class="modal-card" onclick="event.stopPropagation()">
         <div class="modal-header">
-          <h3 id="alert-title">Aviso</h3>
+          <h3 id="alert-title" data-i18n="alertNotice">Aviso</h3>
           <button
             class="icon-btn-close"
             onclick="closeAlert(event)"
+            data-i18n-title="closeTitle"
             title="Cerrar"
           >
             <svg
@@ -345,6 +423,7 @@
     </div>
 
     <script type="text/javascript" src="/eel.js"></script>
+    <script src="i18n.js"></script>
     <script src="script.js"></script>
   </body>
 </html>

@@ -1,3 +1,59 @@
+// Translation Dictionary
+let currentLang = navigator.language.startsWith("es") ? "es" : "en";
+
+function applyLanguage() {
+  const t = translations[currentLang];
+  document.documentElement.lang = currentLang;
+
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    const key = el.getAttribute("data-i18n");
+    if (t[key]) {
+      if (el.tagName === "INPUT" && el.type === "text") {
+        el.placeholder = t[key];
+      } else if (el.tagName === "OPTION") {
+        el.textContent = t[key];
+      } else {
+        let replaced = false;
+        for (let node of el.childNodes) {
+          if (node.nodeType === 3 && node.nodeValue.trim().length > 0) {
+            node.nodeValue = " " + t[key] + " ";
+            replaced = true;
+            break;
+          }
+        }
+        if (!replaced) el.textContent = t[key];
+      }
+    }
+  });
+
+  document.querySelectorAll("[data-i18n-title]").forEach((el) => {
+    const key = el.getAttribute("data-i18n-title");
+    if (t[key]) el.title = t[key];
+  });
+
+  document.title = t.title;
+
+  const pA = document.getElementById("person-a");
+  const pB = document.getElementById("person-b");
+  if (pA && pA.options.length > 0 && currentNames.length === 0) {
+    if (
+      pA.options[0].textContent.includes("Esperando") ||
+      pA.options[0].textContent.includes("Waiting")
+    ) {
+      pA.options[0].textContent = t.waitingFile;
+      pB.options[0].textContent = t.waitingFile;
+    } else {
+      pA.options[0].textContent = t.notDetected;
+      pB.options[0].textContent = t.notDetected;
+    }
+  }
+}
+
+function toggleLanguage() {
+  currentLang = currentLang === "es" ? "en" : "es";
+  applyLanguage();
+}
+
 // Global State
 let selectedFilePath = "";
 let dateRowIdCounter = 0;
@@ -41,8 +97,9 @@ async function selectFile() {
       pB.innerHTML = "";
 
       if (response.names.length === 0) {
-        pA.innerHTML = "<option>No detectado</option>";
-        pB.innerHTML = "<option>No detectado</option>";
+        const t = translations[currentLang];
+        pA.innerHTML = `<option>${t.notDetected}</option>`;
+        pB.innerHTML = `<option>${t.notDetected}</option>`;
         currentNames = [];
       } else {
         currentNames = response.names;
@@ -75,7 +132,8 @@ async function selectFile() {
     }
   } catch (e) {
     console.error(e);
-    showAlert("Ocurrió un error al cargar el archivo.", "Error");
+    const t = translations[currentLang];
+    showAlert(t.alertErrorLoad, t.alertNotice);
     clearFile(null);
   }
 }
@@ -100,8 +158,9 @@ function clearFile(event) {
   aA.disabled = true;
   aB.disabled = true;
 
-  pA.innerHTML = "<option>Esperando archivo...</option>";
-  pB.innerHTML = "<option>Esperando archivo...</option>";
+  const t = translations[currentLang];
+  pA.innerHTML = `<option>${t.waitingFile}</option>`;
+  pB.innerHTML = `<option>${t.waitingFile}</option>`;
   aA.value = "";
   aB.value = "";
   currentNames = [];
@@ -112,6 +171,7 @@ function clearFile(event) {
 
 function addDateRow() {
   const container = document.getElementById("dates-container");
+  const t = translations[currentLang];
   const rowId = dateRowIdCounter++;
 
   const row = document.createElement("div");
@@ -119,9 +179,9 @@ function addDateRow() {
   row.id = `daterow-${rowId}`;
 
   row.innerHTML = `
-        <input type="text" placeholder="Inicio" class="date-start">
-        <input type="text" placeholder="Fin" class="date-end">
-        <button class="btn-icon-danger" onclick="removeDateRow(${rowId})" title="Eliminar rango">
+        <input type="text" placeholder="${t.dateStart}" class="date-start">
+        <input type="text" placeholder="${t.dateEnd}" class="date-end">
+        <button class="btn-icon-danger" onclick="removeDateRow(${rowId})" title="${t.delRangeTitle}">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </button>
     `;
@@ -169,9 +229,9 @@ function closeAlert(event) {
 
 async function generateHtml() {
   const btn = document.getElementById("btn-generate");
+  const t = translations[currentLang];
   btn.disabled = true;
-  btn.innerHTML =
-    'Generando... <span style="display:inline-block;animation:spin 1s linear infinite;">⏳</span>';
+  btn.innerHTML = `${t.btnGenerating} <span style="display:inline-block;animation:spin 1s linear infinite;">⏳</span>`;
 
   // Gather date filters
   const dateRows = document.querySelectorAll(".date-row");
@@ -185,6 +245,7 @@ async function generateHtml() {
   });
 
   const config = {
+    lang: currentLang,
     person_a: document.getElementById("person-a").value,
     person_b: document.getElementById("person-b").value,
     alias_a: document.getElementById("alias-a").value,
@@ -202,24 +263,24 @@ async function generateHtml() {
   try {
     const response = await eel.generate_html(config)();
     if (response.error) {
-      showAlert(`Error: ${response.error}`, "Error");
+      showAlert(`${response.error}`, t.alertNotice);
     } else {
-      showAlert(response.success, "Completado");
+      showAlert(response.success, t.alertCompleted);
     }
   } catch (e) {
     console.error(e);
     showAlert(
-      `Ocurrió un error en la generación: ${e.message || "Error desconocido"}`,
-      "Error",
+      `${t.alertErrorGen} ${e.message || t.alertUnknown}`,
+      t.alertNotice,
     );
   } finally {
     btn.disabled = false;
-    btn.innerHTML =
-      'Generar Conversación HTML <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>';
+    btn.innerHTML = `${t.btnGenerate} <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
   }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  applyLanguage();
   const pA = document.getElementById("person-a");
   const pB = document.getElementById("person-b");
 

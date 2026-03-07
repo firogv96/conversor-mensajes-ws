@@ -6,6 +6,15 @@ from datetime import datetime
 import tkinter as tk
 from tkinter import filedialog
 import eel
+import ctypes
+from i18n import msgs
+
+# Fix for taskbar icon on Windows
+try:
+    myappid = "firo.conversor.mensajes.v2"
+    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+except Exception:
+    pass
 
 # ==============================
 # Helper Functions
@@ -184,14 +193,17 @@ def select_output_file():
 
 @eel.expose
 def generate_html(config):
+    lang = config.get("lang", "es")
+    t = msgs.get(lang, msgs["es"])
+
     if not app_state["filepath"]:
-        return {"error": "No se ha seleccionado archivo."}
+        return {"error": t["no_file"]}
 
     p_A = config.get("person_a")
     p_B = config.get("person_b")
 
-    if not p_A or not p_B or p_A == "No detectado":
-        return {"error": "No hay participantes seleccionados válidos."}
+    if not p_A or not p_B or p_A in ["No detectado", "Not detected"]:
+        return {"error": t["invalid_part"]}
 
     date_filters = []
     for f in config.get("date_filters", []):
@@ -199,9 +211,9 @@ def generate_html(config):
         dt_s = parse_date_ui(ds) if ds else None
         dt_e = parse_date_ui(de) if de else None
         if ds and not dt_s:
-            return {"error": f"Formato de fecha inválido: {ds}"}
+            return {"error": f"{t['invalid_date']}{ds}"}
         if de and not dt_e:
-            return {"error": f"Formato de fecha inválido: {de}"}
+            return {"error": f"{t['invalid_date']}{de}"}
         if dt_s or dt_e:
             date_filters.append((dt_s, dt_e))
 
@@ -351,16 +363,16 @@ def generate_html(config):
     final_html = html_head + html_body + html_foot
     out_path = config.get("out_path", "").strip()
     if not out_path:
-        return {"error": "Ruta de guardado vacía."}
+        return {"error": t["empty_path"]}
 
     try:
         with open(out_path, "w", encoding="utf-8") as f:
             f.write(final_html)
         if config.get("auto_open"):
             webbrowser.open("file://" + os.path.realpath(out_path))
-        return {"success": f"¡HTML generado!\n{count} mensajes exportados."}
+        return {"success": t["success"].format(count)}
     except Exception as e:
-        return {"error": f"Error guardando:\n{str(e)}"}
+        return {"error": f"{t['error_save']}{str(e)}"}
 
 
 if __name__ == "__main__":
