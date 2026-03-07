@@ -8,8 +8,10 @@ El **Conversor de Mensajes de WhatsApp** es una herramienta de escritorio diseñ
 
 ### Características Principales
 
+- **Formateo de Mensajes:** Procesa archivos TXT exportados por WhatsApp en un HTML formateado con estilos semejantes de WhatsApp.
+- **Filtrado:** Permite la selección mediante filtrado por fecha de inicio y fin de fragmentos de la conversación para exportar.
+- **Personalización:** El usuario puede ajustar el tamaño del texto, formato de la hora, densidad de la UI, número de columnas y asignación de alias para los participantes.
 - **Soporte Multilingüe:** La interfaz está disponible en **Español** e **Inglés**. Detecta automáticamente el idioma de tu sistema y permite cambiarlo manualmente desde la aplicación.
-- **Personalización:** Ajuste de tamaño de texto, formato de la hora, filtros de fechas, y asignación de alias para los participantes.
 
 ## ¿Cómo funciona?
 
