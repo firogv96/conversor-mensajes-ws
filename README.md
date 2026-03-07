@@ -6,6 +6,11 @@
 
 El **Conversor de Mensajes de WhatsApp** es una herramienta de escritorio diseñada para transformar los archivos de texto sin formato (`.txt`) exportados de tus chats de WhatsApp en archivos HTML visualmente atractivos y fáciles de leer. El resultado simula la apariencia real de un chat, ofreciendo opciones de personalización como el tamaño de texto, el formato de la hora, e incluso aplicar filtros de fechas. ¡Es ideal para guardar y leer tus historiales de conversación de una manera estética y ordenada!
 
+### Características Principales
+
+- **Soporte Multilingüe:** La interfaz está disponible en **Español** e **Inglés**. Detecta automáticamente el idioma de tu sistema y permite cambiarlo manualmente desde la aplicación.
+- **Personalización:** Ajuste de tamaño de texto, formato de la hora, filtros de fechas, y asignación de alias para los participantes.
+
 ## ¿Cómo funciona?
 
 La aplicación es un programa de escritorio construido en **Python**. En lugar de usar interfaces gráficas de usuario tradicionales, aprovecha las tecnologías web modernas (**HTML, CSS y JavaScript**) para su interfaz gráfica gracias a la librería **[Eel](https://github.com/python-eel/Eel)**.
