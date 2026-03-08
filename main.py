@@ -375,6 +375,11 @@ def generate_html(config):
         return {"error": f"{t['error_save']}{str(e)}"}
 
 
+@eel.expose
+def is_frozen():
+    return getattr(sys, "frozen", False)
+
+
 if __name__ == "__main__":
     try:
         eel.start("index.html", size=(960, 640), port=0)

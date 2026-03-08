@@ -279,8 +279,20 @@ async function generateHtml() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   applyLanguage();
+
+  try {
+    const frozen = await eel.is_frozen()();
+    if (frozen) {
+      document.addEventListener("contextmenu", (event) =>
+        event.preventDefault(),
+      );
+    }
+  } catch (e) {
+    console.error("Error checking frozen state:", e);
+  }
+
   const pA = document.getElementById("person-a");
   const pB = document.getElementById("person-b");
 
